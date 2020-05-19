@@ -2,7 +2,6 @@ import React from "react";
 import {connect} from "react-redux";
 import Users from "./Users";
 import {unfollower, follower, setUser, setCurrentPage, setTotalCount} from "../../Redux/users-reducer";
-import * as axios from "axios";
 
 
 let mapStateToProps = (state) => {

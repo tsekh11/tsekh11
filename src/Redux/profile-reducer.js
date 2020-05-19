@@ -1,14 +1,15 @@
 const initialState = {
-        postData: [
-            {message: 'Hi', likenum: '33'},
-            {message: 'bye', likenum: '13'}
-        ],
-        newPostText: 'Default text'
+    postData: [
+        {message: 'Hi', likenum: '33'},
+        {message: 'bye', likenum: '13'}
+    ],
+    newPostText: '',
+    profile: null
 }
 
 const profileReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'ADD-POST':{
+        case 'ADD-POST': {
             let stateCopy = {...state};
             let message = {
                 message: stateCopy.newPostText,
@@ -17,11 +18,14 @@ const profileReducer = (state = initialState, action) => {
             stateCopy.postData = [...state.postData]
             stateCopy.postData.push(message);
             stateCopy.newPostText = '';
-            return stateCopy;}
-        case 'UPDATE-POST':{
-            let stateCopy = {...state};
-            stateCopy.newPostText = action.newText;
-            return stateCopy;}
+            return stateCopy;
+        }
+        case 'UPDATE-POST': {
+            return {...state, newPostText: action.newText}
+        }
+        case 'SET-USERS-PROFILE': {
+            return {...state, profile: action.profile}
+        }
         default:
             return state;
     }
@@ -29,5 +33,6 @@ const profileReducer = (state = initialState, action) => {
 
 export const newPostActionCreator = () => ({type: 'ADD-POST'});
 export const updatePostActionCreator = (text) => ({type: 'UPDATE-POST', newText: text});
+export const setUsersProfile = (profile) => ({type: 'SET-USERS-PROFILE', profile});
 
 export default profileReducer;

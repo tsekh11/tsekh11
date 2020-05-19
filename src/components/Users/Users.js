@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import s from "./Users.module.css"
 import * as axios from "axios";
 import userlogo from "../Pics/userlogo.png"
+import {NavLink} from "react-router-dom";
 
 const Users = (props) => {
    useEffect( () => {
@@ -37,7 +38,11 @@ const Users = (props) => {
         {
             props.user.map(u => {return <div className={s.usersField} key={u.id}>
                 <span>
-                    <div><img className={s.img} src={u.photos.small != null ? u.photos.small : userlogo}/></div>
+                    <NavLink to={'/profile/' + u.id} >
+                    <div>
+                        <img className={s.img} src={u.photos.small != null ? u.photos.small : userlogo}/>
+                    </div>
+                    </NavLink>
                     <div>
                         {u.followed ? <button onClick={() => props.unfollower(u.id)}>Unfollow</button>
                         : <button onClick={() => props.follower(u.id)}>Follow</button>}
