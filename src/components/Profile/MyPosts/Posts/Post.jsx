@@ -8,7 +8,6 @@ const Post = (props) => {
         <div>
             <button>Like {props.likenum}</button>
         </div>
-
     </div>
 
 }
