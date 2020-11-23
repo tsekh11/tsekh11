@@ -1,4 +1,4 @@
-import React, {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 import s from "./Users.module.css"
 import * as axios from "axios";
 import userlogo from "../Pics/userlogo.png"
@@ -6,18 +6,20 @@ import {NavLink} from "react-router-dom";
 import {followAPI, getUsers, usersAPI} from "../../api/DAL";
 
 const Users = (props) => {
+    const [disabled, setDisabled] = useState(false);
+
     useEffect(() => {
         usersAPI.getUsers(props.currentPage, props.pageSize).then(data => {
-                props.setUser(data.items)
-                props.setTotalCount(data.totalCount)
-            })
-    }, [])
+            props.setUser(data.items)
+            props.setTotalCount(data.totalCount)
+        })
+    }, [props.currentPage, props.pageSize, disabled])
 
     let onPageChanged = (pageNumber) => {
         props.setCurrentPage(pageNumber);
         usersAPI.getUsers(pageNumber, props.pageSize).then(data => {
-                props.setUser(data.items)
-            })
+            props.setUser(data.items)
+        })
     }
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -44,8 +46,8 @@ const Users = (props) => {
                     </div>
                     </NavLink>
                     <div>
-                        {u.followed
-                            ? <button onClick={() =>
+                        {u.followed ? <button disabled={disabled} onClick={() => {
+                                setDisabled(true)
                                 axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
                                     {
                                         withCredentials: true,
@@ -55,16 +57,22 @@ const Users = (props) => {
                                     }
                                 )
                                     .then(response => {
-                                        if (response.data.resultCode == 0)
+                                        if (response.data.resultCode === 0)
                                             props.unfollower(u.id)
-                                    })}>
+                                        setDisabled(false)
+                                    })
+                            }}>
                                 Unfollow
                             </button>
-                            : <button onClick={() =>
+                            : <button disabled={disabled} onClick={() => {
+                                setDisabled(true)
                                 followAPI.follow(u.id).then(response => {
-                                        if (response.data.resultCode == 0)
-                                            props.follower(u.id)
-                                    })}>
+                                    if (response.data.resultCode === 0)
+                                        props.follower(u.id)
+                                        setDisabled(false)
+                                })
+                            }
+                            }>
                                 Follow
                             </button>}
                     </div>
