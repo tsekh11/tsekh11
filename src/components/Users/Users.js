@@ -7,6 +7,7 @@ import {followAPI, getUsers, usersAPI} from "../../api/DAL";
 
 const Users = (props) => {
     const [disabled, setDisabled] = useState(false);
+    let [portionNumber, setPortionNumber] = useState(1);
 
     useEffect(() => {
         usersAPI.getUsers(props.currentPage, props.pageSize).then(data => {
@@ -21,19 +22,30 @@ const Users = (props) => {
             props.setUser(data.items)
         })
     }
-
+    let portionSize = 10;
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
+    let leftPortionBorder = (portionNumber - 1) * portionSize + 1;
+    let rightPortionBorder = portionNumber * portionSize;
+
     let pages = [];
     for (let i = 1; i <= pagesCount; i++) {
         pages.push(i);
     }
 
-    return <div>
+    return <div className={s.usersField}>
         <div>
-            {pages.map(p => {
+            { portionNumber > 1 &&
+            <button onClick={() => setPortionNumber(portionNumber - 1)} >Back</button>
+            }
+            {
+                pages.filter(p => p >= leftPortionBorder && p <= rightPortionBorder)
+                .map(p => {
                 return <span onClick={() => onPageChanged(p)}
                              className={props.currentPage === p && s.currentPage}>{p}</span>
             })
+            }
+            { portionNumber !== portionSize &&
+            <button onClick={() => setPortionNumber(portionNumber + 1)} >Next</button>
             }
         </div>
         {
