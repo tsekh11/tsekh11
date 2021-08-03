@@ -1,7 +1,19 @@
 .nav{
     grid-area: n;
     background-color: #4650c7;
-    padding: 20px;
+    padding-top: 25px;
+}
+
+.name {
+    width: 177px;
+    height: 30px;
+    border-radius: 5px;
+    padding-left: 23px;
+    padding-top: 3px;
+}
+
+.name:hover {
+    background-color: #2d47cc;
 }
 
 .item a{

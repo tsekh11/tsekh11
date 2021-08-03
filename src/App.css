@@ -5,6 +5,7 @@ grid-template-areas:
 'n c';
 grid-template-rows: 60px 1fr;
 grid-template-columns: 200px 10fr;
+font-family: 'Hahmlet', serif;
 }
 
 .app-wrapper-content {
