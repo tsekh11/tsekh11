@@ -5,6 +5,12 @@
 .usersField{
     padding: 10px;
 }
+
+.span{
+    border: solid 1px darkslateblue;
+    border-radius: 30%;
+}
+
 .currentPage{
     font-weight: bold;
 }
