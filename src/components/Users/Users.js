@@ -3,7 +3,7 @@ import s from "./Users.module.css"
 import * as axios from "axios";
 import userlogo from "../Pics/userlogo.png"
 import {NavLink} from "react-router-dom";
-import {followAPI, getUsers, usersAPI} from "../../api/DAL";
+import {followAPI, usersAPI} from "../../api/DAL";
 
 const Users = (props) => {
     const [disabled, setDisabled] = useState(false);
@@ -35,17 +35,17 @@ const Users = (props) => {
     return <div className={s.usersField}>
         <div>
             { portionNumber > 1 &&
-            <button onClick={() => setPortionNumber(portionNumber - 1)} >Back</button>
+            <button onClick={() => setPortionNumber(portionNumber - 1)} className={s.button} >Back</button>
             }
             {
                 pages.filter(p => p >= leftPortionBorder && p <= rightPortionBorder)
                 .map(p => {
                 return <span onClick={() => onPageChanged(p)}
-                             className={props.currentPage === p && s.currentPage}>{p}</span>
+                             className={props.currentPage === p ? s.currentPage : s.span}>{p}</span>
             })
             }
             { portionNumber !== portionSize &&
-            <button onClick={() => setPortionNumber(portionNumber + 1)} >Next</button>
+            <button onClick={() => setPortionNumber(portionNumber + 1)} className={s.button} >Next</button>
             }
         </div>
         {
