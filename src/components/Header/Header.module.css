@@ -6,7 +6,10 @@
 }
 
 .header img{
-    width: 200px;
+    width: 120px;
+    height: 60px;
+    border-radius: 30px;
+    margin-left: 40px;
 }
 
 .login{
