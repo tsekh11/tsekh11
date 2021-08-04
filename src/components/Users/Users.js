@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from "react";
 import s from "./Users.module.css"
-import * as axios from "axios";
 import userlogo from "../Pics/userlogo.png"
 import {NavLink} from "react-router-dom";
 import {followAPI, usersAPI} from "../../api/DAL";
@@ -60,15 +59,7 @@ const Users = (props) => {
                     <div>
                         {u.followed ? <button disabled={disabled} onClick={() => {
                                 setDisabled(true)
-                                axios.delete(`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,
-                                    {
-                                        withCredentials: true,
-                                        headers: {
-                                            'API-KEY': '86903fc2-0705-47d7-9513-c2f9a3e41faa'
-                                        }
-                                    }
-                                )
-                                    .then(response => {
+                                followAPI.unfollow(u.id).then(response => {
                                         if (response.data.resultCode === 0)
                                             props.unfollower(u.id)
                                         setDisabled(false)
