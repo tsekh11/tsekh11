@@ -1,4 +1,4 @@
-import {followAPI, usersAPI} from "../api/DAL";
+import {usersAPI} from "../api/DAL";
 
 const initialState = {
     users: [],
@@ -60,7 +60,7 @@ export const getUsers = (currentPage, pageSize) => (dispatch) => {
 }
 
 export const unfollow = (id, setDisabled) => (dispatch) => {
-    followAPI.unfollow(id).then(response => {
+    usersAPI.unfollow(id).then(response => {
         if (response.data.resultCode === 0)
             dispatch(unfollower(id))
         setDisabled(false)
@@ -68,7 +68,7 @@ export const unfollow = (id, setDisabled) => (dispatch) => {
 }
 
 export const follow = (id, setDisabled) => (dispatch) => {
-    followAPI.follow(id).then(response => {
+    usersAPI.follow(id).then(response => {
         if (response.data.resultCode === 0)
             dispatch(follower(id))
         setDisabled(false)

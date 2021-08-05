@@ -1,4 +1,4 @@
-import {getProfileDataAPI} from "../api/DAL";
+import {usersAPI} from "../api/DAL";
 
 const initialState = {
     postData: [
@@ -38,7 +38,7 @@ export const updatePostActionCreator = (text) => ({type: 'UPDATE-POST', newText:
 export const setUsersProfile = (profile) => ({type: 'SET-USERS-PROFILE', profile});
 
 export const getInfo = (userId) => (dispatch) => {
-    getProfileDataAPI.getProfileInfo(userId).then(response => {
+    usersAPI.getProfileInfo(userId).then(response => {
         dispatch(setUsersProfile(response.data))
     })
 }
