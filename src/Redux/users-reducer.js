@@ -1,3 +1,5 @@
+import {followAPI, usersAPI} from "../api/DAL";
+
 const initialState = {
     users: [],
     pageSize: 15,
@@ -49,5 +51,28 @@ export const follower = (userID) => ({type: 'FOLLOW', userID});
 export const setUser = (users) => ({type: 'SET-USERS', users});
 export const setCurrentPage = (currentPage) => ({type: 'SET-CURRENT-PAGE', currentPage});
 export const setTotalCount = (totalUsersCount) => ({type: 'SET-TOTAL-COUNT', totalUsersCount});
+
+export const getUsers = (currentPage, pageSize) => (dispatch) => {
+    usersAPI.getUsers(currentPage, pageSize).then(data => {
+        dispatch(setUser(data.items))
+        dispatch(setTotalCount(data.totalCount))
+    })
+}
+
+export const unfollow = (id, setDisabled) => (dispatch) => {
+    followAPI.unfollow(id).then(response => {
+        if (response.data.resultCode === 0)
+            dispatch(unfollower(id))
+        setDisabled(false)
+    })
+}
+
+export const follow = (id, setDisabled) => (dispatch) => {
+    followAPI.follow(id).then(response => {
+        if (response.data.resultCode === 0)
+            dispatch(follower(id))
+        setDisabled(false)
+    })
+}
 
 export default UsersReducer;

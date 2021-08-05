@@ -3,18 +3,6 @@ import {newMessageActionCreator, updateMessageActionCreator} from "../../Redux/d
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
 
-
-// const DialogsContainer = (props) => {
-//
-//     let newMessage = () => {
-//         props.dispatch(newMessageActionCreator())
-//     }
-//     let textMessageChanges = (text) => {
-//         props.dispatch(updateMessageActionCreator(text))
-//     }
-//     return <Dialogs newMessageCreate={newMessage} updateMessageText={textMessageChanges} dialog={props.state.messagesData}/>
-// }
-
 let mapStateToProps = (state) => {
     return {
         dialog: state.messagesData

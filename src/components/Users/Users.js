@@ -2,24 +2,18 @@ import React, {useEffect, useState} from "react";
 import s from "./Users.module.css"
 import userlogo from "../Pics/userlogo.png"
 import {NavLink} from "react-router-dom";
-import {followAPI, usersAPI} from "../../api/DAL";
 
 const Users = (props) => {
     const [disabled, setDisabled] = useState(false);
     let [portionNumber, setPortionNumber] = useState(1);
 
     useEffect(() => {
-        usersAPI.getUsers(props.currentPage, props.pageSize).then(data => {
-            props.setUser(data.items)
-            props.setTotalCount(data.totalCount)
-        })
+        props.getUsers(props.currentPage, props.pageSize)
     }, [props.currentPage, props.pageSize, disabled])
 
     let onPageChanged = (pageNumber) => {
         props.setCurrentPage(pageNumber);
-        usersAPI.getUsers(pageNumber, props.pageSize).then(data => {
-            props.setUser(data.items)
-        })
+        props.getUsers(props.currentPage, props.pageSize)
     }
     let portionSize = 10;
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -59,21 +53,13 @@ const Users = (props) => {
                     <div>
                         {u.followed ? <button disabled={disabled} onClick={() => {
                                 setDisabled(true)
-                                followAPI.unfollow(u.id).then(response => {
-                                        if (response.data.resultCode === 0)
-                                            props.unfollower(u.id)
-                                        setDisabled(false)
-                                    })
+                                props.unfollow(u.id, setDisabled)
                             }}>
                                 Unfollow
                             </button>
                             : <button disabled={disabled} onClick={() => {
                                 setDisabled(true)
-                                followAPI.follow(u.id).then(response => {
-                                    if (response.data.resultCode === 0)
-                                        props.follower(u.id)
-                                        setDisabled(false)
-                                })
+                                props.follow(u.id, setDisabled)
                             }
                             }>
                                 Follow

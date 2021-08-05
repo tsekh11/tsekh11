@@ -1,3 +1,5 @@
+import {getProfileDataAPI} from "../api/DAL";
+
 const initialState = {
     postData: [
         {message: 'Hi', likenum: '33'},
@@ -34,5 +36,11 @@ const profileReducer = (state = initialState, action) => {
 export const newPostActionCreator = () => ({type: 'ADD-POST'});
 export const updatePostActionCreator = (text) => ({type: 'UPDATE-POST', newText: text});
 export const setUsersProfile = (profile) => ({type: 'SET-USERS-PROFILE', profile});
+
+export const getInfo = (userId) => (dispatch) => {
+    getProfileDataAPI.getProfileInfo(userId).then(response => {
+        dispatch(setUsersProfile(response.data))
+    })
+}
 
 export default profileReducer;
