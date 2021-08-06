@@ -1,5 +1,5 @@
 import React from "react";
-import {Redirect, withRouter} from "react-router-dom";
+import {Redirect} from "react-router-dom";
 import {connect} from "react-redux";
 
 let MapStateToProps = (state) => ({
@@ -13,5 +13,5 @@ export const WithAuthRedirect = (Component) => {
         return <Component {...props} />
         }
 
-    return connect(MapStateToProps)(withRouter(WithRedirect))
+    return connect(MapStateToProps)(WithRedirect)
 }
