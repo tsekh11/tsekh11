@@ -1,4 +1,4 @@
-import {usersAPI} from "../api/DAL";
+import {profileAPI} from "../api/DAL";
 
 const initialState = {
     postData: [
@@ -6,7 +6,8 @@ const initialState = {
         {message: 'bye', likenum: '13'}
     ],
     newPostText: '',
-    profile: null
+    profile: null,
+    status: '-------'
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -28,6 +29,9 @@ const profileReducer = (state = initialState, action) => {
         case 'SET-USERS-PROFILE': {
             return {...state, profile: action.profile}
         }
+        case 'SET-STATUS': {
+            return {...state, status: action.status}
+        }
         default:
             return state;
     }
@@ -36,10 +40,24 @@ const profileReducer = (state = initialState, action) => {
 export const newPostActionCreator = () => ({type: 'ADD-POST'});
 export const updatePostActionCreator = (text) => ({type: 'UPDATE-POST', newText: text});
 export const setUsersProfile = (profile) => ({type: 'SET-USERS-PROFILE', profile});
+export const setStatus = (status) => ({type: 'SET-STATUS', status});
 
 export const getInfo = (userId) => (dispatch) => {
-    usersAPI.getProfileInfo(userId).then(response => {
+    profileAPI.getProfileInfo(userId).then(response => {
         dispatch(setUsersProfile(response.data))
+    })
+}
+
+export const getStatus = (userId) => (dispatch) => {
+    profileAPI.getUserStatus(userId).then(response => {
+        dispatch(setStatus(response.data))
+    })
+}
+export const updateStatus = (status) => (dispatch) => {
+    profileAPI.updateUserStatus(status).then(response => {
+        if(response.data.resultCode === 0) {
+            dispatch(setStatus(status))
+        }
     })
 }
 

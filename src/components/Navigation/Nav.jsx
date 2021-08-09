@@ -5,7 +5,7 @@ import {NavLink} from "react-router-dom";
 const Navbar = () => {
     return <nav className={st.nav}>
         <div className={st.item}>
-            <NavLink to='/profile'>
+            <NavLink to='/profile/8268'>
                 <div className={st.name}>Profile</div>
             </NavLink>
         </div>

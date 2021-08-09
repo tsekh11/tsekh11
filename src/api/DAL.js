@@ -27,12 +27,19 @@ export const usersAPI = {
                 return response.data
             })
     },
-    getProfileInfo(id) {
-        return instance.get(id == null ? "https://social-network.samuraijs.com/api/1.0/profile/18225" : `https://social-network.samuraijs.com/api/1.0/profile/` + id)
-    },
     getAuthData() {
         return instance.get(`https://social-network.samuraijs.com/api/1.0/auth/me`)
     }
 }
 
-
+export const profileAPI = {
+    getProfileInfo(id) {
+        return instance.get(id == null ? "https://social-network.samuraijs.com/api/1.0/profile/8268" : `https://social-network.samuraijs.com/api/1.0/profile/` + id)
+    },
+    getUserStatus(id) {
+        return instance.get(id == null ? "https://social-network.samuraijs.com/api/1.0/profile/status/8268" : `https://social-network.samuraijs.com/api/1.0/profile/status/` + id)
+    },
+    updateUserStatus(status) {
+        return instance.put('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
+    }
+ }
