@@ -1,10 +1,10 @@
-import {usersAPI} from "../api/DAL";
+import {authAPI} from "../api/DAL";
 
 const initialState = {
     id: null,
     login: null,
     email: null,
-    isAuth: false
+    isAuth: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -12,22 +12,37 @@ const authReducer = (state = initialState, action) => {
         case 'SET-LOGIN':
             return {
                 ...state,
-                ...action.data,
-                isAuth: true
+                ...action.data
             }
         default:
             return state;
     }
 }
 
-export const setLogin = (id, login, email) => ({type: 'SET-LOGIN', data: {id, login, email}});
+export const setLogin = (id, login, email, isAuth) => ({type: 'SET-LOGIN', data: {id, login, email, isAuth}});
 
 export const getAuth = () => (dispatch) => {
-    usersAPI.getAuthData()
+    authAPI.getAuthData()
         .then(response => {
             if(response.data.resultCode === 0){
                 let {id, login, email} = response.data.data;
-                dispatch(setLogin(id, login, email))
+                dispatch(setLogin(id, login, email, true))
+            }
+        })
+}
+export const login = (email, password, rememberMe) => (dispatch) => {
+    authAPI.loginAuth(email, password, rememberMe)
+        .then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(getAuth())
+            }
+        })
+}
+export const logout = () => (dispatch) => {
+    authAPI.logoutAuth()
+        .then(response => {
+            if(response.data.resultCode === 0){
+                dispatch(setLogin(null, null, null, false))
             }
         })
 }
