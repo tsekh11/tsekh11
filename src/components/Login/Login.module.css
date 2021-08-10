@@ -1,0 +1,30 @@
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.form_wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.errorStyle {
+    color: darkred;
+}
+
+.inputStyle {
+    border-radius: 5px;
+}
+
+.button {
+    margin: 7px;
+    border-radius: 5px;
+    background-color: #4650c7;
+    color: white;
+}
+
+.label {
+    margin: 5px;
+}
