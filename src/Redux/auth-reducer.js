@@ -4,7 +4,9 @@ const initialState = {
     id: null,
     login: null,
     email: null,
-    isAuth: null
+    isAuth: null,
+    errorMessage: '',
+    isErrorLogin: false
 }
 
 const authReducer = (state = initialState, action) => {
@@ -13,6 +15,12 @@ const authReducer = (state = initialState, action) => {
             return {
                 ...state,
                 ...action.data
+            };
+        case 'LOGIN-ERROR':
+            return {
+                ...state,
+                errorMessage: action.message,
+                isErrorLogin: true
             }
         default:
             return state;
@@ -20,6 +28,8 @@ const authReducer = (state = initialState, action) => {
 }
 
 export const setLogin = (id, login, email, isAuth) => ({type: 'SET-LOGIN', data: {id, login, email, isAuth}});
+export const setLoginError = (message) => ({type: 'LOGIN-ERROR', message});
+
 
 export const getAuth = () => (dispatch) => {
     authAPI.getAuthData()
@@ -35,6 +45,8 @@ export const login = (email, password, rememberMe) => (dispatch) => {
         .then(response => {
             if(response.data.resultCode === 0){
                 dispatch(getAuth())
+            }else if(response.data.resultCode === 1){
+                dispatch(setLoginError(response.data.messages[0]))
             }
         })
 }

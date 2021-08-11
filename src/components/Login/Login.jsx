@@ -3,7 +3,7 @@ import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import s from './Login.module.css'
 import {connect} from "react-redux";
-import {login, logout} from "../../Redux/auth-reducer";
+import {login} from "../../Redux/auth-reducer";
 import {Redirect} from "react-router-dom";
 
 const LoginForm = (props) => {
@@ -42,6 +42,12 @@ const LoginForm = (props) => {
                 remember me
                 </label>
 
+                {
+                    props.isErrorLogin ? <label className={s.errorStyle}>
+                        {props.errorMessage}
+                    </label> : null
+                }
+
                 <button type="submit" className={s.button}>Submit</button>
             </Form>
         </Formik>
@@ -54,14 +60,16 @@ const Login = (props) => {
     }
     return <div className={s.wrapper}>
         <h3>Login please</h3>
-        <LoginForm login={props.login} logout={props.logout}/>
+        <LoginForm {...props} />
     </div>
 }
 
 let mapStateToProps = (state) => {
     return {
-        isAuth: state.auth.isAuth
+        isAuth: state.auth.isAuth,
+        errorMessage: state.auth.errorMessage,
+        isErrorLogin: state.auth.isErrorLogin,
     }
 }
 
-export default connect(mapStateToProps, {login, logout} )(Login)
+export default connect(mapStateToProps, {login} )(Login)
