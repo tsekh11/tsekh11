@@ -6,7 +6,8 @@ const initialState = {
     email: null,
     isAuth: null,
     errorMessage: '',
-    isErrorLogin: false
+    isErrorLogin: false,
+    isInitialized: false
 }
 
 const authReducer = (state = initialState, action) => {
@@ -21,7 +22,7 @@ const authReducer = (state = initialState, action) => {
                 ...state,
                 errorMessage: action.message,
                 isErrorLogin: true
-            }
+            };
         default:
             return state;
     }
@@ -29,7 +30,6 @@ const authReducer = (state = initialState, action) => {
 
 export const setLogin = (id, login, email, isAuth) => ({type: 'SET-LOGIN', data: {id, login, email, isAuth}});
 export const setLoginError = (message) => ({type: 'LOGIN-ERROR', message});
-
 
 export const getAuth = () => (dispatch) => {
     authAPI.getAuthData()

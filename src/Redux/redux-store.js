@@ -4,12 +4,14 @@ import profileReducer from "./profile-reducer";
 import UsersReducer from "./users-reducer";
 import authReducer from "./auth-reducer";
 import thunkMiddleware from "redux-thunk"
+import appReducer from "./app-reducer";
 
 let reducers = combineReducers({
     messagesData: dialogReducer,
     profileData: profileReducer,
     userData: UsersReducer,
-    auth: authReducer
+    auth: authReducer,
+    app: appReducer
 });
 
 let store = createStore(reducers, applyMiddleware(thunkMiddleware));

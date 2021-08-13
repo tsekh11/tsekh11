@@ -7,7 +7,14 @@ import {WithAuthRedirect} from "../../HOC/WithAuthRedirect";
 import {compose} from "redux";
 
 const ProfileContainer = (props) => {
-    let userId = props.match.params.userId;
+    let userId = null
+
+    if (props.match.params.userId) {
+        userId = props.match.params.userId
+    }else {
+        userId = '8268'
+    }
+
     useEffect( () => {
         props.getInfo(userId);
         props.getStatus(userId)
