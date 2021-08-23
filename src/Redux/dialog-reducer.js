@@ -1,3 +1,6 @@
+const UPDATE_MESSAGE = 'app/dialog/UPDATE-MESSAGE'
+const ADD_MESSAGE = 'app/dialog/ADD-MESSAGE'
+
 const initialState = {
     dialogData: [
         {name: 'Misha', id: '1'},
@@ -18,27 +21,24 @@ const initialState = {
 
 const dialogReducer = (state = initialState, action) => {
     switch (action.type) {
-        case 'UPDATE-MESSAGE': {
-            let stateCopy = {...state};
-            stateCopy.updateTextArea = action.newText;
-            return stateCopy;
-        }
-        case 'ADD-MESSAGE': {
-            let stateCopy = {...state};
-            let message = {
-                message: stateCopy.updateTextArea,
+        case UPDATE_MESSAGE: {
+            return {
+                ...state,
+                updateTextArea: action.newText
             }
-            stateCopy.messageData = [...state.messageData]
-            stateCopy.messageData.push(message)
+        }
+        case ADD_MESSAGE: {
+            let stateCopy = {...state};
+            stateCopy.messageData.push({message: stateCopy.updateTextArea})
             stateCopy.updateTextArea = '';
-            return stateCopy;
+            return stateCopy
         }
         default:
             return state;
     }
 }
 
-export const updateMessageActionCreator = (text) => ({type: 'UPDATE-MESSAGE', newText: text});
-export const newMessageActionCreator = () => ({type: 'ADD-MESSAGE'});
+export const updateMessageActionCreator = (text) => ({type: UPDATE_MESSAGE, newText: text});
+export const newMessageActionCreator = () => ({type: ADD_MESSAGE});
 
 export default dialogReducer;
