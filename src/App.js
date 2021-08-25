@@ -6,13 +6,16 @@ import Music from "./components/Music/Music";
 import Video from "./components/Video/Video";
 import News from "./components/News/News";
 import Settings from "./components/Settings/Settings";
-import DialogsContainer from "./components/Dialogs/Dialogs.Container";
-import UsersContainer from "./components/Users/Users.Container"
+//import DialogsContainer from "./components/Dialogs/Dialogs.Container";
+//import UsersContainer from "./components/Users/Users.Container"
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
 import Login from "./components/Login/Login";
 import {connect} from "react-redux";
 import {getAuth} from "./Redux/auth-reducer";
+import {WithSuspense} from "./HOC/WithSuspense";
+const DialogsContainer = React.lazy(() => import('./components/Dialogs/Dialogs.Container'));
+const UsersContainer = React.lazy(() => import('./components/Users/Users.Container'));
 
 const App = (props) => {
 
@@ -27,8 +30,8 @@ const App = (props) => {
                 <Navbar/>
                 <div className='app-wrapper-content'>
                     <Route path='/profile/:userId?' render={() => <ProfileContainer/>}/>
-                    <Route path='/dialogs' render={() => <DialogsContainer/>}/>
-                    <Route path='/users' render={() => <UsersContainer/>}/>
+                    <Route path='/dialogs' render={WithSuspense(DialogsContainer)}/>
+                    <Route path='/users' render={WithSuspense(UsersContainer)}/>
                     <Route path='/music' component={Music}/>
                     <Route path='/video' component={Video}/>
                     <Route path='/news' component={News}/>
