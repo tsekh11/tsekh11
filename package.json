@@ -2,7 +2,7 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "//https://github.com/tsekh11/tsekh11/src",
+  "homepage": "http://tsekh11.github.io/tsekh11",
   "dependencies": {
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",

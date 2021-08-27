@@ -1,7 +1,7 @@
 import React, {useEffect} from 'react';
 import './App.css';
 import Navbar from './components/Navigation/Nav';
-import {BrowserRouter, Route} from "react-router-dom";
+import {HashRouter, Route} from "react-router-dom";
 import Music from "./components/Music/Music";
 import Video from "./components/Video/Video";
 import News from "./components/News/News";
@@ -24,7 +24,7 @@ const App = (props) => {
     }, [])
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             <div className='app-wrapper'>
                 <HeaderContainer/>
                 <Navbar/>
@@ -39,7 +39,7 @@ const App = (props) => {
                     <Route path='/login' component={Login}/>
                 </div>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     );
 
 }
