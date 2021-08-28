@@ -38,6 +38,15 @@ export const profileAPI = {
     },
     updateUserStatus(status) {
         return instance.put('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
+    },
+    updatePhoto(photo) {
+        var formData = new FormData();
+        formData.append('image', photo)
+        return instance.put('https://social-network.samuraijs.com/api/1.0/profile/photo', formData, {
+            headers: {
+                "Content-Type": 'multipart/form-data'
+            }
+        })
     }
  }
 
