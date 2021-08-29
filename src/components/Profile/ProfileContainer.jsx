@@ -1,38 +1,40 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
-import {getInfo, getStatus, savePhoto, updateStatus} from "../../Redux/profile-reducer";
+import {getInfo, getStatus, savePhoto, setUserId, updateStatus} from "../../Redux/profile-reducer";
 import {withRouter} from "react-router-dom";
 import {WithAuthRedirect} from "../../HOC/WithAuthRedirect";
 import {compose} from "redux";
 
 const ProfileContainer = (props) => {
-    let userId = null
+    let userId;
 
     if (props.match.params.userId) {
         userId = props.match.params.userId
-    }else {
+        props.setUserId(userId)
+    } else {
         userId = '8268'
+        props.setUserId(userId)
     }
 
-    useEffect( () => {
+    useEffect(() => {
         props.getInfo(userId);
         props.getStatus(userId)
-    }, [userId, props.photos])
+    }, [userId])
 
-        return <div>
-        <Profile {...props} profile={props.profile} updateStatus={props.updateStatus} status={props.status} userId={userId}/>
+    return <div>
+        <Profile {...props} profile={props.profile} updateStatus={props.updateStatus} status={props.status}/>
     </div>
 }
 let MapStateToProps = (state) => ({
-    photos: state.profileData.profile && state.profileData.profile.photos.large,
+    userId: state.profileData.userId,
     profile: state.profileData.profile,
     status: state.profileData.status,
     isAuth: state.auth.isAuth
 })
 
 export default compose(
-    connect(MapStateToProps, {getInfo, getStatus, updateStatus, savePhoto}),
+    connect(MapStateToProps, {getInfo, getStatus, updateStatus, savePhoto, setUserId}),
     withRouter,
     WithAuthRedirect
 )(ProfileContainer)

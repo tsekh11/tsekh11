@@ -5,6 +5,7 @@ const UPDATE_POST = 'app/profile/UPDATE-POST'
 const SET_USERS_PROFILE = 'app/profile/SET-USERS-PROFILE'
 const SET_STATUS = 'app/profile/SET-STATUS'
 const SET_PHOTO = 'app/profile/SET-PHOTO'
+const SET_USER_ID = 'app/profile/SET-USER-ID'
 
 const initialState = {
     postData: [
@@ -14,7 +15,7 @@ const initialState = {
     newPostText: '',
     profile: null,
     status: '-------',
-    photoIsChanged: 0
+    userId: null
 }
 
 const profileReducer = (state = initialState, action) => {
@@ -35,7 +36,10 @@ const profileReducer = (state = initialState, action) => {
             return {...state, status: action.status}
         }
         case SET_PHOTO: {
-            return {...state, profile: {...state.profile, photos: action.photo}, photoIsChanged: {...state.photoIsChanged++}}
+            return {...state, profile: {...state.profile, photos: action.photo}}
+        }
+        case SET_USER_ID: {
+            return {...state, userId: action.userId}
         }
         default:
             return state;
@@ -47,6 +51,7 @@ export const updatePostActionCreator = (text) => ({type: UPDATE_POST, newText: t
 export const setUsersProfile = (profile) => ({type: SET_USERS_PROFILE, profile});
 export const setStatus = (status) => ({type: SET_STATUS, status});
 export const setPhoto = (photo) => ({type: SET_STATUS, photo});
+export const setUserId = (userId) => ({type: SET_USER_ID, userId});
 
 export const getInfo = (userId) => async (dispatch) => {
     const response = await profileAPI.getProfileInfo(userId)
@@ -64,11 +69,12 @@ export const updateStatus = (status) => async (dispatch) => {
     }
 }
 export const savePhoto = (photo) => async (dispatch, getState) => {
-    const userId = getState().auth.userId;
+    const userID = getState().profileData.userId
     const response = await profileAPI.updatePhoto(photo);
     if (response.data.resultCode === 0) {
         dispatch(setPhoto(response.data.data.photos))
-        dispatch(setUsersProfile(userId))
+        dispatch(getInfo(userID))
+        dispatch(getStatus(userID))
     }
 }
 
