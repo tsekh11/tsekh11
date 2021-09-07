@@ -1,5 +1,5 @@
 import React from 'react';
-import { Formik, Field, Form, ErrorMessage } from 'formik';
+import {Formik, Field, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import s from './Login.module.css'
 import {connect} from "react-redux";
@@ -9,7 +9,7 @@ import {Redirect} from "react-router-dom";
 const LoginForm = (props) => {
     return (
         <Formik
-            initialValues={{ login: '', password: '', checked: [] }}
+            initialValues={{login: '', password: '', checked: [], captcha: ''}}
             validationSchema={Yup.object({
                 email: Yup.string().email('Invalid email address').required('Required'),
                 password: Yup.string()
@@ -19,28 +19,34 @@ const LoginForm = (props) => {
             })}
             onSubmit={
                 (values) => {
-                    const {email, password, rememberMe} = {...values}
-                    props.login(email, password, rememberMe)
+                    const {email, password, rememberMe, captcha} = {...values}
+                    props.login(email, password, rememberMe, captcha)
                 }
             }
         >
-            <Form className={s.form_wrapper} >
-                <label htmlFor="email" className={s.label} >Login:</label>
-                <Field name="email" type="text" placeholder="Enter email" className={s.inputStyle} />
+            <Form className={s.form_wrapper}>
+                <label htmlFor="email" className={s.label}>Login:</label>
+                <Field name="email" type="text" placeholder="Enter email" className={s.inputStyle}/>
                 <span className={s.errorStyle}>
-                    <ErrorMessage name="email" />
+                    <ErrorMessage name="email"/>
                 </span>
 
-                <label htmlFor="password" className={s.label} >Password:</label>
-                <Field name="password" type="password" placeholder="Enter password" className={s.inputStyle} />
+                <label htmlFor="password" className={s.label}>Password:</label>
+                <Field name="password" type="password" placeholder="Enter password" className={s.inputStyle}/>
                 <span className={s.errorStyle}>
-                     <ErrorMessage name="password" />
+                     <ErrorMessage name="password"/>
                 </span>
 
-                <label className={s.label} >
-                <Field type="checkbox" name="rememberMe" />
-                remember me
+                <label className={s.label}>
+                    <Field type="checkbox" name="rememberMe"/>
+                    remember me
                 </label>
+
+                {props.captchaUrl && <img src={props.captchaUrl} width='150px'/>}
+                {props.captchaUrl && <span>
+                    <Field name="captcha" placeholder="Enter captcha" className={s.inputStyle}/>
+                </span>
+                }
 
                 {
                     props.isErrorLogin ? <label className={s.errorStyle}>
@@ -67,9 +73,10 @@ const Login = (props) => {
 let mapStateToProps = (state) => {
     return {
         isAuth: state.auth.isAuth,
+        captchaUrl: state.auth.captchaUrl,
         errorMessage: state.auth.errorMessage,
         isErrorLogin: state.auth.isErrorLogin,
     }
 }
 
-export default connect(mapStateToProps, {login} )(Login)
+export default connect(mapStateToProps, {login})(Login)

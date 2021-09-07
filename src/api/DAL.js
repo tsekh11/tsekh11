@@ -57,10 +57,16 @@ export const authAPI = {
     getAuthData() {
         return instance.get(`https://social-network.samuraijs.com/api/1.0/auth/me`)
     },
-    loginAuth(email, password, rememberMe) {
-        return instance.post(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe })
+    loginAuth(email, password, rememberMe, captcha) {
+        return instance.post(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe, captcha })
     },
     logoutAuth() {
         return instance.delete(`https://social-network.samuraijs.com/api/1.0/auth/login`)
     },
+}
+
+export const securityAPI = {
+    getCaptchaUrl() {
+        return instance.get(`https://social-network.samuraijs.com/api/1.0//security/get-captcha-url`)
+    }
 }
