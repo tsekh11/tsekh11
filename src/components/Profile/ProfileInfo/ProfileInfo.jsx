@@ -6,6 +6,7 @@ import EditDataForm from "./EditDataForm";
 
 const ProfileInfo = (props) => {
     const [edit, setEdit] = useState(false)
+    const [showInfo, setShowInfo] = useState(false)
 
     const onPhotoChange = (e) => {
         if (e.target.files.length) {
@@ -23,9 +24,18 @@ const ProfileInfo = (props) => {
                 <h3>{props.profile != null ? props.profile.fullName : null}</h3>
                 <ProfileStatus userId={props.userId} updateStatus={props.updateStatus} status={props.status}/>
                 <div>
-                {edit ? <EditDataForm profile={props.profile} setEdit={setEdit} updateInfo={props.updateInfo}/> :
-                    <InfoData profile={props.profile}/>
-                }
+                    {!showInfo ?
+                        <h4 onClick={() => setShowInfo(true)}>Show info</h4> :
+                        <h4 onClick={() => setShowInfo(false)}>Hide info</h4>
+                    }
+                    {showInfo ?
+                        <div>
+                            {edit ? <EditDataForm profile={props.profile} setEdit={setEdit}
+                                                  updateInfo={props.updateInfo}/> :
+                                <InfoData profile={props.profile}/>
+                            }
+                        </div> : null
+                    }
                 </div>
             </div>
             <div>
@@ -36,7 +46,7 @@ const ProfileInfo = (props) => {
                         </div>
                         {!edit ?
                             <div>
-                                <button onClick={() => setEdit(true)}>Edit profile</button>
+                                <button onClick={() => setEdit(true)}>Edit info</button>
                             </div> : null
                         }
                     </div> :
@@ -55,9 +65,6 @@ const InfoData = ({profile}) => {
     }
 
     return <>{profile && <div>
-        <div>
-            <b>Info:</b>
-        </div>
         <div>
             About me: {profile.aboutMe}
         </div>

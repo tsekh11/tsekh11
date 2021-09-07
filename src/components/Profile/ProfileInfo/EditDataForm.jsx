@@ -81,9 +81,6 @@ const EditDataForm = ({profile, setEdit, updateInfo}) => {
         >
             <Form>
                 <div>
-                    <label htmlFor="info"><b>Info:</b></label>
-                </div>
-                <div>
                     <label htmlFor="aboutMe">About me:</label>
                     <Field name="aboutMe" type="text" placeholder="Enter text"/>
                 </div>
@@ -120,7 +117,8 @@ const EditDataForm = ({profile, setEdit, updateInfo}) => {
                 <div>
                     <ErrorMessage name="fullName" />
                 </div>
-                <button type="submit">Submit</button>
+                <button type="submit">Save</button>
+                <button onClick={() => setEdit(false)}>Cancel</button>
             </Form>
         </Formik>
     )
