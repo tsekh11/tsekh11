@@ -68,6 +68,14 @@ export const updateStatus = (status) => async (dispatch) => {
         dispatch(setStatus(status))
     }
 }
+export const updateInfo = (data) => async (dispatch, getState) => {
+    const userID = getState().profileData.userId
+    const response = await profileAPI.updateUserInfo(data)
+    if (response.data.resultCode === 0) {
+        dispatch(getInfo(userID))
+        dispatch(getStatus(userID))
+    }
+}
 export const savePhoto = (photo) => async (dispatch, getState) => {
     const userID = getState().profileData.userId
     const response = await profileAPI.updatePhoto(photo);
