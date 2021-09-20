@@ -6,7 +6,10 @@ const initialState = {
     isInitialized: false
 }
 
-const appReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState
+
+
+const appReducer = (state = initialState, action: any): InitialStateType => {
     switch (action.type) {
         case SET_INITIALIZED:
             return {
@@ -18,10 +21,10 @@ const appReducer = (state = initialState, action) => {
     }
 }
 
-export const setIsInitialized = () => ({type: SET_INITIALIZED});
+export const setIsInitialized: () => ({type: typeof SET_INITIALIZED}) = () => ({type: SET_INITIALIZED});
 
 
-export const getIsInitialized = () => async (dispatch) => {
+export const getIsInitialized = () => async (dispatch: any) => {
   await dispatch(getAuth());
   dispatch(setIsInitialized())
 }

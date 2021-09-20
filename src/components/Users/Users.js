@@ -12,7 +12,6 @@ const Users = (props) => {
 
     let onPageChanged = (pageNumber) => {
         props.setCurrentPage(pageNumber);
-        props.getUsers(props.currentPage, props.pageSize)
     }
 
     let pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
