@@ -1,21 +1,29 @@
-import React from "react";
+import React, {FC} from "react";
 import s from './Dialogs.module.css'
 import DialogItem from "./DialogItems/DialogItems";
 import Message from "./Messages/Messages";
+import {DialogType, MessageType} from "../../Redux/dialog-reducer";
 
+export type DialogPropsType = {
+    dialogData: Array<DialogType>
+    messageData: Array<MessageType>
+    updateTextArea: string
+    newMessageCreate: () => void
+    updateMessageText: (text: string) => void
+}
 
-const Dialogs = (props) => {
+const Dialogs: FC<DialogPropsType> = ({dialogData, messageData, updateTextArea, newMessageCreate, updateMessageText}) => {
 
-    let dialogs = props.dialog.dialogData.map(d => <DialogItem name={d.name} id={d.id}/>)
-    let messages = props.dialog.messageData.map(m => <Message message={m.message}/>)
+    let dialogs = dialogData.map(d => <DialogItem name={d.name} id={d.id}/>)
+    let messages = messageData.map(m => <Message message={m.message}/>)
 
     let newMessage = () => {
-        props.newMessageCreate()
+        newMessageCreate()
     }
 
-    let textMessageChanges = (event) => {
+    let textMessageChanges = (event: any) => {
         let text = event.target.value;
-        props.updateMessageText(text)
+        updateMessageText(text)
     }
     return (
         <div className={s.dialogs}>
@@ -29,7 +37,7 @@ const Dialogs = (props) => {
                     messages
                 }
                 <textarea onChange={textMessageChanges} placeholder={'Enter your message'}
-                          value={props.dialog.updateTextArea}/>
+                          value={updateTextArea}/>
                 <div>
                     <button onClick={newMessage}>Send</button>
                 </div>
