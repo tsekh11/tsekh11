@@ -4,7 +4,13 @@ import {NavLink} from "react-router-dom";
 import logo from "../Pics/logo.png"
 import logoutPic from "../Pics/logout.png"
 
-const Header = (props) => {
+export type HeaderType = {
+    isAuth: boolean | null,
+    login: null | string,
+    logout: () => void,
+}
+
+const Header = (props: HeaderType) => {
 
     return <header className={s.header}>
         <img className={s.logo}
