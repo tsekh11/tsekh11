@@ -10,7 +10,7 @@ import Settings from "./components/Settings/Settings";
 //import UsersContainer from "./components/Users/Users.Container"
 import ProfileContainer from "./components/Profile/ProfileContainer";
 import HeaderContainer from "./components/Header/HeaderContainer";
-import Login from "./components/Login/Login";
+import Login from "./components/Login/LoginContainer";
 import {connect} from "react-redux";
 import {WithSuspense} from "./HOC/WithSuspense";
 import {getIsInitialized} from "./Redux/app-reducer";
