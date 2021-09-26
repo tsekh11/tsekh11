@@ -22,8 +22,6 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(rootReducer, composeEnhancers(applyMiddleware(thunkMiddleware)
 ));
 
-//let store = createStore(rootReducer, applyMiddleware(thunkMiddleware));
-
 // @ts-ignore
 window.__store__ = store;
 
