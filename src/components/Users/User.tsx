@@ -1,10 +1,18 @@
 import s from "./Users.module.css";
 import {NavLink} from "react-router-dom";
 import userlogo from "../Pics/userlogo.png";
-import React from "react";
+import React, {FC} from "react";
+import {UserType} from "./Users.Container";
 
+type User = {
+    user: UserType
+    unfollow: (id: number, setDisabled: any) => void
+    follow: (id: number, setDisabled: any) => void
+    disabled: boolean
+    setDisabled: (value: boolean) => void
+}
 
-const User = ({user, follow, unfollow, disabled, setDisabled}) => {
+const User: FC<User> = ({user, follow, unfollow, disabled, setDisabled}) => {
     let u = user;
 
     return <div className={s.usersField} key={u.id}>
@@ -36,9 +44,9 @@ const User = ({user, follow, unfollow, disabled, setDisabled}) => {
                             <span>{u.status}</span>
                         </div>
                     </span>
-        <span>
-                        <div>{u.location}</div>
-                    </span>
+        {/*<span>*/}
+        {/*                /!*<div>{u.location}</div>*!/*/}
+        {/*            </span>*/}
     </div>
 }
 export default User

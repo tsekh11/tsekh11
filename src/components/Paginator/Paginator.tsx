@@ -1,7 +1,13 @@
 import s from "../Users/Users.module.css";
-import React, {useState} from "react";
+import React, {FC, useState} from "react";
 
-const Paginator = ({onPageChanged, currentPage, pages}) => {
+type PaginatorType = {
+    onPageChanged: (pageNumber: number) => void
+    currentPage: number
+    pages: Array<number>
+}
+
+const Paginator: FC<PaginatorType> = ({onPageChanged, currentPage, pages}) => {
 
     let [portionNumber, setPortionNumber] = useState(1);
     let portionSize = 10;

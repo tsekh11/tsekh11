@@ -1,16 +1,18 @@
-import React, {useEffect, useState} from "react";
+import React, {FC, useEffect, useState} from "react";
 import s from "./Users.module.css"
 import Paginator from "../Paginator/Paginator";
 import User from "./User";
+import {UsersContainerType} from "./Users.Container";
 
-const Users = (props) => {
+
+const Users: FC<UsersContainerType> = (props) => {
     const [disabled, setDisabled] = useState(false);
 
     useEffect(() => {
         props.getUsers(props.currentPage, props.pageSize)
     }, [props.currentPage, props.pageSize, disabled])
 
-    let onPageChanged = (pageNumber) => {
+    let onPageChanged = (pageNumber: number) => {
         props.setCurrentPage(pageNumber);
     }
 
