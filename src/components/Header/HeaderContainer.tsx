@@ -13,11 +13,8 @@ type MapDispatchToPropsType = {
     logout: () => void
 }
 
-type OwnProps = {
 
-}
-
-type PropsType = MapStateToPropsType & MapDispatchToPropsType & OwnProps
+type PropsType = MapStateToPropsType & MapDispatchToPropsType
 
 
 const HeaderContainer = (props: PropsType) => {
@@ -31,4 +28,4 @@ let MapStateToProps = (state: AppStateType): MapStateToPropsType => ({
     login: state.auth.login
 })
 
-export default connect<MapStateToPropsType, MapDispatchToPropsType, OwnProps, AppStateType>(MapStateToProps, {logout})(HeaderContainer);
+export default connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(MapStateToProps, {logout})(HeaderContainer);

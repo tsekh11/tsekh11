@@ -36,12 +36,8 @@ type MapDispatchToPropsType = {
     getUsers: (currentPage: number, pageSize: number) => void
 }
 
-type OwnPropsType ={
-    disabled: boolean
-    setDisabled: () => void
-}
 
-export type UsersContainerType = MapStateToPropsType & MapDispatchToPropsType & OwnPropsType
+export type UsersContainerType = MapStateToPropsType & MapDispatchToPropsType
 
 let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     return {
@@ -52,6 +48,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 
-const UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, OwnPropsType, AppStateType>(mapStateToProps, {unfollow, follow, setCurrentPage, getUsers})(Users);
+const UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {unfollow, follow, setCurrentPage, getUsers})(Users);
 
 export default UsersContainer;

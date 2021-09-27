@@ -12,24 +12,25 @@ type PostType = {
     likenum: string
 }
 type ContactsType = {
-    github: string | null
-    vk: string | null
-    facebook: string | null
-    instagram: string | null
-    twitter: string | null
-    website: string | null
-    youtube: string | null
-    mainLink: string | null
+    github: string
+    vk: string
+    facebook: string
+    instagram: string
+    twitter: string
+    website: string
+    youtube: string
+    mainLink: string
 }
+
 export type PhotosType = {
-    small: string | null
-    large: string | null
+    small: string
+    large: string
 }
-type ProfileType = {
-    userId: number | null
+export type ProfileType = {
+    userId: number
     lookingForAJob: boolean
-    lookingForAJobDescription: string | null
-    fullName: string | null
+    lookingForAJobDescription: string
+    fullName: string
     contacts: ContactsType,
     photos: PhotosType
 }
@@ -40,9 +41,9 @@ const initialState = {
         {message: 'bye', likenum: '13'}
     ] as Array<PostType>,
     newPostText: '',
-    profile: null as null | any,
+    profile: null as null | ProfileType,
     status: '-------',
-    userId: null as null | number
+    userId: null as null | string
 }
 
 export type InitialStateType = typeof initialState
@@ -65,7 +66,7 @@ const profileReducer = (state = initialState, action: any): InitialStateType => 
             return {...state, status: action.status}
         }
         case SET_PHOTO: {
-            return {...state, profile: {...state.profile, photos: action.photo}}
+            return {...state, profile: {...state.profile, photos: action.photo} as ProfileType}
         }
         case SET_USER_ID: {
             return {...state, userId: action.userId}
@@ -81,15 +82,15 @@ export const updatePostActionCreator: (text: string) => ({type: typeof UPDATE_PO
 export const setUsersProfile: (profile: ProfileType) => ({type: typeof SET_USERS_PROFILE, profile: ProfileType})
                             = (profile) => ({type: SET_USERS_PROFILE, profile});
 export const setStatus: (status: string) => ({type: typeof SET_STATUS, status: string}) = (status) => ({type: SET_STATUS, status});
-export const setPhoto: (photo: string) => ({type: typeof SET_STATUS, photo: string}) = (photo) => ({type: SET_STATUS, photo});
-export const setUserId: (userId: number) => ({type: typeof SET_USER_ID, userId: number}) = (userId) => ({type: SET_USER_ID, userId});
+export const setPhoto: (photo: PhotosType) => ({type: typeof SET_STATUS, photo: PhotosType}) = (photo) => ({type: SET_STATUS, photo});
+export const setUserId: (userId: string) => ({type: typeof SET_USER_ID, userId: string}) = (userId) => ({type: SET_USER_ID, userId});
 
-export const getInfo = (userId: number) => async (dispatch: any) => {
+export const getInfo = (userId: string) => async (dispatch: any) => {
     const response = await profileAPI.getProfileInfo(userId)
     dispatch(setUsersProfile(response.data))
 }
 
-export const getStatus = (userId: number) => async (dispatch: any) => {
+export const getStatus = (userId: string) => async (dispatch: any) => {
     const response = await profileAPI.getUserStatus(userId)
     dispatch(setStatus(response.data))
 }

@@ -25,11 +25,8 @@ type MapDispatchToPropsType = {
     updateMessageText: (text: string) => void
 }
 
-type OwnProps = {
 
-}
-
-type DialogsContainer = MapDispatchToPropsType & MapStateToPropsType & OwnProps
+type DialogsContainer = MapDispatchToPropsType & MapStateToPropsType
 
 const DialogsContainer = (props: DialogsContainer) => {
     if (!props.isAuth) return <Redirect to={'/login'}/>
@@ -49,6 +46,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 export default compose(
-    connect<MapStateToPropsType, MapDispatchToPropsType, OwnProps, AppStateType>(mapStateToProps, {newMessageCreate, updateMessageText}),
+    connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {newMessageCreate, updateMessageText}),
     WithAuthRedirect
 )(DialogsContainer)
