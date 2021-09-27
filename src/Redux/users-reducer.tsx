@@ -1,5 +1,6 @@
 import {usersAPI} from "../api/DAL";
 import {PhotosType} from "./profile-reducer";
+import {ThunkAction} from "redux-thunk";
 
 const UNFOLLOW = 'api/users/UNFOLLOW'
 const FOLLOW = 'api/users/FOLLOW'
@@ -33,7 +34,7 @@ const followFunc = (data: Array<UsersType>, action: any, value: boolean): any =>
     })
 }
 
-const UsersReducer = (state = initialState, action: any): InitialStateType => {
+const UsersReducer = (state = initialState, action: ActionsType): InitialStateType => {
     switch (action.type) {
         case UNFOLLOW:
             return {
@@ -60,28 +61,36 @@ const UsersReducer = (state = initialState, action: any): InitialStateType => {
     }
 }
 
-export const unfollower: (userID: number) => ({type: typeof UNFOLLOW, userID: number}) = (userID) => ({type: UNFOLLOW, userID});
-export const follower: (userID: number) => ({type: typeof FOLLOW, userID: number}) = (userID) => ({type: FOLLOW, userID});
-export const setUser: (users: UsersType) => ({type: typeof SET_USERS, users: UsersType}) = (users) => ({type: SET_USERS, users});
-export const setCurrentPage: (currentPage: number) => ({type: typeof SET_CURRENT_PAGE, currentPage: number})
-    = (currentPage) => ({type: SET_CURRENT_PAGE, currentPage});
-export const setTotalCount: (totalUsersCount: number) => ({type: typeof SET_TOTAL_COUNT, totalUsersCount: number})
-    = (totalUsersCount) => ({type: SET_TOTAL_COUNT, totalUsersCount});
+type ActionsType = UnfollowerType | FollowerType | SetUserType | SetCurrentPageType | SetTotalCountType
 
-export const getUsers = (currentPage: number, pageSize: number) => async (dispatch: any) => {
+type UnfollowerType = {type: typeof UNFOLLOW, userID: number}
+type FollowerType = {type: typeof FOLLOW, userID: number}
+type SetUserType = {type: typeof SET_USERS, users: Array<UsersType>}
+type SetCurrentPageType = {type: typeof SET_CURRENT_PAGE, currentPage: number}
+type SetTotalCountType = {type: typeof SET_TOTAL_COUNT, totalUsersCount: number}
+
+export const unfollower = (userID: number): UnfollowerType => ({type: UNFOLLOW, userID});
+export const follower = (userID: number): FollowerType => ({type: FOLLOW, userID});
+export const setUser = (users: Array<UsersType>): SetUserType => ({type: SET_USERS, users});
+export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({type: SET_CURRENT_PAGE, currentPage});
+export const setTotalCount = (totalUsersCount: number): SetTotalCountType => ({type: SET_TOTAL_COUNT, totalUsersCount});
+
+type ThunkType = ThunkAction<Promise<void>, any, any, ActionsType>
+
+export const getUsers = (currentPage: number, pageSize: number): ThunkType => async (dispatch) => {
     const data = await usersAPI.getUsers(currentPage, pageSize)
     dispatch(setUser(data.items))
     dispatch(setTotalCount(data.totalCount))
 }
 
-export const unfollow = (id: number, setDisabled: any) => async (dispatch: any) => {
+export const unfollow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.unfollow(id)
     if (response.data.resultCode === 0)
         dispatch(unfollower(id))
     setDisabled(false)
 }
 
-export const follow = (id: number, setDisabled: any) => async (dispatch: any) => {
+export const follow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.follow(id)
     if (response.data.resultCode === 0)
         dispatch(follower(id))
