@@ -1,7 +1,8 @@
-import React from 'react';
+import React, {FC} from 'react';
+import { PostType } from '../../../../Redux/profile-reducer';
 import s from './Post.module.css'
 
-const Post = (props) => {
+const Post: FC<PostType> = (props) => {
     return <div className={s.item}>
         <img src='https://images2.minutemediacdn.com/image/upload/c_fill,g_auto,h_1248,w_2220/v1555921450/shape/mentalfloss/theterminator.jpg?itok=y0C2LP_j'/>
         {props.message}

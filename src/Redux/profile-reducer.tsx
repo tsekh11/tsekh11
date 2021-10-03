@@ -9,7 +9,7 @@ const SET_STATUS = 'app/profile/SET-STATUS'
 const SET_PHOTO = 'app/profile/SET-PHOTO'
 const SET_USER_ID = 'app/profile/SET-USER-ID'
 
-type PostType = {
+export type PostType = {
     message: string
     likenum: string
 }

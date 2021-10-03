@@ -1,15 +1,17 @@
-import React, {useState} from 'react';
+import React, {FC, useState} from 'react';
 import s from './ProfileInfo.module.css'
 import userLogo from "../../Pics/userlogo.png"
 import ProfileStatus from "./ProfileStatus";
 import EditDataForm from "./EditDataForm";
 import Loader from "../../Loader/Loader";
+import { ProfileContainerType } from '../ProfileContainer';
+import { ProfileType } from '../../../Redux/profile-reducer';
 
-const ProfileInfo = (props) => {
+const ProfileInfo: FC<ProfileContainerType> = (props) => {
     const [edit, setEdit] = useState(false)
     const [showInfo, setShowInfo] = useState(false)
 
-    const onPhotoChange = (e) => {
+    const onPhotoChange = (e: any) => {
         if (e.target.files.length) {
             props.savePhoto(e.target.files[0])
         }
@@ -35,7 +37,7 @@ const ProfileInfo = (props) => {
                             <div>
                                 {edit ? <EditDataForm profile={props.profile} setEdit={setEdit}
                                                       updateInfo={props.updateInfo}/> :
-                                    <InfoData profile={props.profile}/>
+                                    <InfoData {...props}/>
                                 }
                             </div> : null
                         }
@@ -63,25 +65,32 @@ const ProfileInfo = (props) => {
     }
 }
 
-const InfoData = ({profile}) => {
+type ContactsType = {
+    name: string
+    description: string
+    profile: ProfileType
+}
 
-    const Contacts = ({name, description}) => {
-        return <div>{name}: {description}</div>
+const InfoData: FC<ProfileContainerType> = (props) => {
+
+    const Contacts: FC<ContactsType> = (props) => {
+        return <div>{props.name}: {props.description}</div>
     }
 
-    return <>{profile && <div>
+    return <>{props.profile && <div>
+        {/*<div>*/}
+        {/*    About me: {props.profile.aboutMe}*/}
+        {/*</div>*/}
         <div>
-            About me: {profile.aboutMe}
+            Looking for a job: {props.profile.lookingForAJob ? "Yes" : "No"}
         </div>
         <div>
-            Looking for a job: {profile.lookingForAJob ? "Yes" : "No"}
+            My skills: {props.profile.lookingForAJobDescription}
         </div>
         <div>
-            My skills: {profile.lookingForAJobDescription}
-        </div>
-        <div>
-            Contacts: {Object.keys(profile.contacts).map(key => {
-                return <Contacts key={key} name={key} description={profile.contacts[key]}/>
+            Contacts: {Object.keys(props.profile.contacts).map((key) => {
+                // @ts-ignore
+            return <Contacts key={key} name={key} description={props.profile.contacts[key]}/>
             }
         )}
         </div>

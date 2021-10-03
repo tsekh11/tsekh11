@@ -1,7 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {FC, useEffect, useState} from 'react';
 import s from './ProfileInfo.module.css'
 
-const ProfileStatus = (props) => {
+type ProfileStatusType = {
+    status: string
+    userId: string | null
+    updateStatus: (status: string) => void
+}
+
+const ProfileStatus: FC<ProfileStatusType> = (props) => {
     const [isEdit, setIsEdit] = useState(false)
     const [status, setStatus] = useState('')
 

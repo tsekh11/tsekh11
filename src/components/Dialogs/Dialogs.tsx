@@ -22,8 +22,7 @@ const Dialogs: FC<DialogPropsType> = ({dialogData, messageData, updateTextArea, 
     }
 
     let textMessageChanges = (event: any) => {
-        let text = event.target.value;
-        updateMessageText(text)
+        updateMessageText(event.target.value)
     }
     return (
         <div className={s.dialogs}>

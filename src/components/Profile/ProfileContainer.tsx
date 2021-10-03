@@ -32,7 +32,7 @@ type MapDispatchToPropsType = {
     updateInfo: (data: ProfileType) => void
 }
 
-type ProfileContainerType = MapDispatchToPropsType & MapStateToPropsType
+export type ProfileContainerType = MapDispatchToPropsType & MapStateToPropsType
 
 const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<any>> = (props) => {
     let userId: string;

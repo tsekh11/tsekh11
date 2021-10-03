@@ -1,25 +1,24 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from './MyPosts.module.css'
+import { PostsType } from './MyPostsContainer';
 import Post from "./Posts/Post";
 
 
-const MyPosts = (props) => {
-    let newPostText = React.forwardRef();
-    let posts = props.post.postData.map(p => <Post message={p.message} likenum={p.likenum}/>)
+const MyPosts: FC<PostsType> = (props) => {
+    let posts = props.postData.map(p => <Post message={p.message} likenum={p.likenum}/>)
 
     let newPost = () => {
-        props.createNewPost();
+        props.newPostActionCreator();
     }
 
-    let textChanges = () =>{
-        let text = newPostText.current.value;
-        props.updatePostText(text);
+    let textChanges = (e: any) =>{
+        props.updatePostActionCreator(e.target.value);
     }
 
     return <div className={s.item}>
         <h3>My Posts</h3>
         <div>
-            <textarea onChange={textChanges} ref={newPostText} value={props.post.newPostText}/>
+            <textarea onChange={textChanges} value={props.newPostText}/>
         </div>
         <div>
             <button onClick={newPost}>Send</button>
