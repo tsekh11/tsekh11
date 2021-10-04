@@ -3,7 +3,7 @@ import s from './ProfileInfo.module.css'
 
 type ProfileStatusType = {
     status: string
-    userId: string | null
+    userId: number | null
     updateStatus: (status: string) => void
 }
 
@@ -24,7 +24,7 @@ const ProfileStatus: FC<ProfileStatusType> = (props) => {
     return <div>
             <div className={s.status}>
                 <div>
-                    {!isEdit ? <span onClick={() => props.userId === "8268" && setIsEdit(true)}>{props.status || "-----"}</span> :
+                    {!isEdit ? <span onClick={() => props.userId === 8268 && setIsEdit(true)}>{props.status || "-----"}</span> :
                         <input onBlur={onBlurAction} onChange={(event) => setStatus(event.currentTarget.value)} autoFocus={true} value={status}/>}
                 </div>
             </div>

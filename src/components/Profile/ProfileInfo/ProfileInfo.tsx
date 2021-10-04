@@ -44,7 +44,7 @@ const ProfileInfo: FC<ProfileContainerType> = (props) => {
                     </div>
                 </div>
                 <div>
-                    {props.userId === '8268' ?
+                    {props.userId === 8268 ?
                         <div>
                             <div>
                                 <input type="file" onChange={onPhotoChange}/>

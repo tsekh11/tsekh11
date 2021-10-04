@@ -45,7 +45,7 @@ const initialState = {
     newPostText: '',
     profile: null as null | ProfileType,
     status: '-------',
-    userId: null as null | string
+    userId: null as null | number
 }
 
 export type InitialStateType = typeof initialState
@@ -83,7 +83,7 @@ type UpdatePostActionCreator = {type: typeof UPDATE_POST, newText: string}
 type SetUsersProfile = {type: typeof SET_USERS_PROFILE, profile: ProfileType}
 type SetStatus = {type: typeof SET_STATUS, status: string}
 type SetPhoto = {type: typeof SET_PHOTO, photo: PhotosType}
-type SetUserId = {type: typeof SET_USER_ID, userId: string}
+type SetUserId = {type: typeof SET_USER_ID, userId: number}
 
 type ActionsType = NewPostActionCreator | UpdatePostActionCreator | SetUserId | SetPhoto | SetStatus | SetUsersProfile
 type ThunkType = ThunkAction<Promise<void>, AppStateType, any, ActionsType>
@@ -93,14 +93,14 @@ export const updatePostActionCreator = (text: string): UpdatePostActionCreator =
 export const setUsersProfile = (profile: ProfileType): SetUsersProfile => ({type: SET_USERS_PROFILE, profile});
 export const setStatus = (status: string): SetStatus => ({type: SET_STATUS, status});
 export const setPhoto = (photo: PhotosType): SetPhoto => ({type: SET_PHOTO, photo});
-export const setUserId = (userId: string): SetUserId => ({type: SET_USER_ID, userId});
+export const setUserId = (userId: number): SetUserId => ({type: SET_USER_ID, userId});
 
-export const getInfo = (userId: string | null): ThunkType => async (dispatch) => {
+export const getInfo = (userId: number | null): ThunkType => async (dispatch) => {
     const response = await profileAPI.getProfileInfo(userId)
     dispatch(setUsersProfile(response.data))
 }
 
-export const getStatus = (userId: string | null): ThunkType => async (dispatch) => {
+export const getStatus = (userId: number | null): ThunkType => async (dispatch) => {
     const response = await profileAPI.getUserStatus(userId)
     dispatch(setStatus(response.data))
 }

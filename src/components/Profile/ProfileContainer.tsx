@@ -17,31 +17,31 @@ import {AppStateType} from "../../Redux/redux-store";
 
 
 type MapStateToPropsType = {
-    userId: string | null
+    userId: number | null
     profile: ProfileType | null
     status: string
     isAuth: boolean | null
 }
 
 type MapDispatchToPropsType = {
-    getInfo: (userId: string) => void
-    getStatus: (userId: string) => void
+    getInfo: (userId: number) => void
+    getStatus: (userId: number) => void
     updateStatus: (status: string) => void
     savePhoto: (photo: any) => void
-    setUserId: (userId: string) => void
+    setUserId: (userId: number) => void
     updateInfo: (data: ProfileType) => void
 }
 
 export type ProfileContainerType = MapDispatchToPropsType & MapStateToPropsType
 
 const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<any>> = (props) => {
-    let userId: string;
+    let userId: number;
 
     if (props.match.params.userId) {
         userId = props.match.params.userId
         props.setUserId(userId)
     } else {
-        userId = '8268'
+        userId = 8268
         props.setUserId(userId)
     }
 
