@@ -8,7 +8,7 @@ const SET_USERS = 'api/users/SET-USERS'
 const SET_CURRENT_PAGE = 'api/users/SET-CURRENT-PAGE'
 const SET_TOTAL_COUNT = 'api/users/SET-TOTAL-COUNT'
 
-type UsersType = {
+export type UsersType = {
     name: string | null
     id: number
     photos: PhotosType
@@ -85,14 +85,14 @@ export const getUsers = (currentPage: number, pageSize: number): ThunkType => as
 
 export const unfollow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.unfollow(id)
-    if (response.data.resultCode === 0)
+    if (response.resultCode === 0)
         dispatch(unfollower(id))
     setDisabled(false)
 }
 
 export const follow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.follow(id)
-    if (response.data.resultCode === 0)
+    if (response.resultCode === 0)
         dispatch(follower(id))
     setDisabled(false)
 }

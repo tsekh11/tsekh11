@@ -1,5 +1,6 @@
 import axios from "axios";
 import {PhotosType, ProfileType} from "../Redux/profile-reducer";
+import {UsersType} from "../Redux/users-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -9,21 +10,33 @@ const instance = axios.create({
     }
 })
 
+type GetUsers = {
+    "items": Array<UsersType>
+    "totalCount": number
+    "error": null | string
+}
+
+type FollowUnfollowType = {
+    resultCode: number
+    messages: Array<string>
+    data: boolean
+}
+
 export const usersAPI = {
     getUsers(currentPage: number, pageSize: number) {
-        return instance.get(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`)
+        return instance.get<GetUsers>(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
             })
     },
     follow(id: number) {
-        return instance.post(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+        return instance.post<FollowUnfollowType>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
             })
     },
     unfollow(id: number) {
-        return instance.delete(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+        return instance.delete<FollowUnfollowType>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
             })
