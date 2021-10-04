@@ -51,24 +51,23 @@ type PhotoAnswer = {
     }
 }
 
-
 export const profileAPI = {
     getProfileInfo(id: number | null) {
-        return instance.get<ProfileType>(`https://social-network.samuraijs.com/api/1.0/profile/` + id).then(res => res.data)
+        return instance.get<ProfileType>(`profile/` + id).then(res => res.data)
     },
     getUserStatus(id: number | null) {
-        return instance.get<string>(`https://social-network.samuraijs.com/api/1.0/profile/status/` + id).then( res => res.data)
+        return instance.get<string>(`profile/status/` + id).then( res => res.data)
     },
     updateUserStatus(status: string) {
-        return instance.put<PutDeleteAnswerType>('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
+        return instance.put<PutDeleteAnswerType>('profile/status', { status })
     },
     updateUserInfo(data: ProfileType) {
-        return instance.put<PutDeleteAnswerType>('https://social-network.samuraijs.com/api/1.0/profile',  data)
+        return instance.put<PutDeleteAnswerType>('profile',  data)
     },
-    updatePhoto(photo: any) {
+    updatePhoto(photo: File) {
         let formData = new FormData();
         formData.append('image', photo)
-        return instance.put<PhotoAnswer>('https://social-network.samuraijs.com/api/1.0/profile/photo', formData, {
+        return instance.put<PhotoAnswer>('profile/photo', formData, {
             headers: {
                 "Content-Type": 'multipart/form-data'
             }
@@ -111,18 +110,18 @@ export const profileAPI = {
 
 export const authAPI = {
     getAuthData() {
-        return instance.get<AuthMe>(`https://social-network.samuraijs.com/api/1.0/auth/me`).then( (res) => res.data)
+        return instance.get<AuthMe>(`auth/me`).then( (res) => res.data)
     },
     loginAuth(email: string, password: string, rememberMe: boolean, captcha: boolean) {
-        return instance.post<LoginAuth>(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
+        return instance.post<LoginAuth>(`auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
     },
     logoutAuth() {
-        return instance.delete<PutDeleteAnswerType>(`https://social-network.samuraijs.com/api/1.0/auth/login`).then(res => res.data)
+        return instance.delete<PutDeleteAnswerType>(`auth/login`).then(res => res.data)
     },
 }
 
 export const securityAPI = {
     getCaptchaUrl() {
-        return instance.get<{url: string}>(`https://social-network.samuraijs.com/api/1.0//security/get-captcha-url`).then( res => res.data)
+        return instance.get<{url: string}>(`security/get-captcha-url`).then( res => res.data)
     }
 }

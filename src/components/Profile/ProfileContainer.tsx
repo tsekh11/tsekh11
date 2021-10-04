@@ -38,7 +38,7 @@ const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<any>> = (p
     let userId: number | null;
 
     if (props.match.params.userId) {
-        userId = props.match.params.userId
+        userId = +props.match.params.userId
         props.setUserId(userId)
     } else {
         userId = 8268
