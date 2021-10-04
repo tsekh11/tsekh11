@@ -1,4 +1,4 @@
-import {authAPI, securityAPI} from "../api/DAL";
+import {authAPI, ResultCode, ResultCodeCaptcha, securityAPI} from "../api/DAL";
 import {ThunkAction} from "redux-thunk";
 
 const SET_LOGIN = 'auth/SET-LOGIN';
@@ -55,31 +55,31 @@ export const setCaptchaUrl = (data: string): SetCaptchaUrlType => ({type: GET_CA
 
 export const getAuth = (): ThunkType => async (dispatch) => {
     let response = await authAPI.getAuthData();
-    if (response.data.resultCode === 0) {
-        let {id, login, email} = response.data.data;
+    if (response.resultCode === ResultCode.Success) {
+        let {id, login, email} = response.data;
         dispatch(setLogin(id, login, email, true))
     }
 }
 export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean): ThunkType => async (dispatch) => {
     let response = await authAPI.loginAuth(email, password, rememberMe, captcha);
-    if (response.data.resultCode === 0) {
+    if (response.resultCode === ResultCode.Success) {
         dispatch(getAuth())
     } else {
-        if(response.data.resultCode === 10){
+        if(response.resultCode === ResultCodeCaptcha.Required){
             dispatch(getCaptcha())
         }
-        dispatch(setLoginError(response.data.messages[0]))
+        dispatch(setLoginError(response.messages[0]))
     }
 }
 export const logout = (): ThunkType => async (dispatch) => {
     let response = await authAPI.logoutAuth();
-    if (response.data.resultCode === 0) {
+    if (response.resultCode === ResultCode.Success) {
         dispatch(setLogin(null, null, null, false))
     }
 }
 export const getCaptcha = (): ThunkType => async (dispatch) => {
     let response = await securityAPI.getCaptchaUrl();
-    dispatch(setCaptchaUrl(response.data.url))
+    dispatch(setCaptchaUrl(response.url))
 }
 
 export default authReducer;

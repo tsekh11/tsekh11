@@ -1,4 +1,5 @@
 import axios from "axios";
+import {ProfileType} from "../Redux/profile-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -9,19 +10,19 @@ const instance = axios.create({
 })
 
 export const usersAPI = {
-    getUsers(currentPage, pageSize) {
+    getUsers(currentPage: number, pageSize: number) {
         return instance.get(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`)
             .then(response => {
                 return response.data
             })
     },
-    follow(id) {
+    follow(id: number) {
         return instance.post(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
             })
     },
-    unfollow(id) {
+    unfollow(id: number) {
         return instance.delete(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
@@ -30,20 +31,20 @@ export const usersAPI = {
 }
 
 export const profileAPI = {
-    getProfileInfo(id) {
+    getProfileInfo(id: number) {
         return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/` + id)
     },
-    getUserStatus(id) {
+    getUserStatus(id: number) {
         return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/status/` + id)
     },
-    updateUserStatus(status) {
+    updateUserStatus(status: string) {
         return instance.put('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
     },
-    updateUserInfo(data) {
+    updateUserInfo(data: ProfileType) {
         return instance.put('https://social-network.samuraijs.com/api/1.0/profile',  data)
     },
-    updatePhoto(photo) {
-        var formData = new FormData();
+    updatePhoto(photo: any) {
+        let formData = new FormData();
         formData.append('image', photo)
         return instance.put('https://social-network.samuraijs.com/api/1.0/profile/photo', formData, {
             headers: {
@@ -53,20 +54,53 @@ export const profileAPI = {
     }
  }
 
+ type AuthMe = {
+     resultCode: number
+     messages: Array<string>,
+     data: {
+         id: number
+         email: string
+         login: string
+     }
+ }
+
+ type LoginAuth = {
+     resultCode: number
+     messages: Array<string>
+     data: {
+         id: number
+     }
+ }
+
+ type LogoutAuth = {
+     resultCode: number
+     messages: Array<string>,
+     data: Object
+ }
+
+ export enum ResultCode {
+     Success = 0,
+     Error = 1,
+ }
+
+ export enum ResultCodeCaptcha {
+     Required = 10
+ }
+
 export const authAPI = {
     getAuthData() {
-        return instance.get(`https://social-network.samuraijs.com/api/1.0/auth/me`)
+        return instance.get<AuthMe>(`https://social-network.samuraijs.com/api/1.0/auth/me`).then( (res) => res.data)
     },
-    loginAuth(email, password, rememberMe, captcha) {
-        return instance.post(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe, captcha })
+    loginAuth(email: string, password: string, rememberMe: boolean, captcha: boolean) {
+        return instance.post<LoginAuth>(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
     },
     logoutAuth() {
-        return instance.delete(`https://social-network.samuraijs.com/api/1.0/auth/login`)
+        return instance.delete<LogoutAuth>(`https://social-network.samuraijs.com/api/1.0/auth/login`).then(res => res.data)
     },
 }
 
 export const securityAPI = {
     getCaptchaUrl() {
-        return instance.get(`https://social-network.samuraijs.com/api/1.0//security/get-captcha-url`)
+        return instance.get<{url: string}>(`https://social-network.samuraijs.com/api/1.0//security/get-captcha-url`).then( res => res.data)
     }
 }
