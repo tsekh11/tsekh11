@@ -24,18 +24,18 @@ type MapStateToPropsType = {
 }
 
 type MapDispatchToPropsType = {
-    getInfo: (userId: number) => void
-    getStatus: (userId: number) => void
+    getInfo: (userId: number | null) => void
+    getStatus: (userId: number | null) => void
     updateStatus: (status: string) => void
     savePhoto: (photo: any) => void
-    setUserId: (userId: number) => void
+    setUserId: (userId: number | null) => void
     updateInfo: (data: ProfileType) => void
 }
 
 export type ProfileContainerType = MapDispatchToPropsType & MapStateToPropsType
 
 const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<any>> = (props) => {
-    let userId: number;
+    let userId: number | null;
 
     if (props.match.params.userId) {
         userId = props.match.params.userId

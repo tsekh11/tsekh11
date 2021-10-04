@@ -1,5 +1,5 @@
 import axios from "axios";
-import {ProfileType} from "../Redux/profile-reducer";
+import {PhotosType, ProfileType} from "../Redux/profile-reducer";
 
 const instance = axios.create({
     withCredentials: true,
@@ -30,23 +30,32 @@ export const usersAPI = {
     }
 }
 
+type PhotoAnswer = {
+    resultCode: number
+    messages: Array<string>
+    data: {
+        photos: PhotosType
+    }
+}
+
+
 export const profileAPI = {
-    getProfileInfo(id: number) {
-        return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/` + id)
+    getProfileInfo(id: number | null) {
+        return instance.get<ProfileType>(`https://social-network.samuraijs.com/api/1.0/profile/` + id).then(res => res.data)
     },
-    getUserStatus(id: number) {
-        return instance.get(`https://social-network.samuraijs.com/api/1.0/profile/status/` + id)
+    getUserStatus(id: number | null) {
+        return instance.get<string>(`https://social-network.samuraijs.com/api/1.0/profile/status/` + id).then( res => res.data)
     },
     updateUserStatus(status: string) {
-        return instance.put('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
+        return instance.put<PutDeleteAnswerType>('https://social-network.samuraijs.com/api/1.0/profile/status', { status })
     },
     updateUserInfo(data: ProfileType) {
-        return instance.put('https://social-network.samuraijs.com/api/1.0/profile',  data)
+        return instance.put<PutDeleteAnswerType>('https://social-network.samuraijs.com/api/1.0/profile',  data)
     },
     updatePhoto(photo: any) {
         let formData = new FormData();
         formData.append('image', photo)
-        return instance.put('https://social-network.samuraijs.com/api/1.0/profile/photo', formData, {
+        return instance.put<PhotoAnswer>('https://social-network.samuraijs.com/api/1.0/profile/photo', formData, {
             headers: {
                 "Content-Type": 'multipart/form-data'
             }
@@ -72,9 +81,9 @@ export const profileAPI = {
      }
  }
 
- type LogoutAuth = {
+ type PutDeleteAnswerType = {
      resultCode: number
-     messages: Array<string>,
+     messages: Array<string>
      data: Object
  }
 
@@ -95,7 +104,7 @@ export const authAPI = {
         return instance.post<LoginAuth>(`https://social-network.samuraijs.com/api/1.0/auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
     },
     logoutAuth() {
-        return instance.delete<LogoutAuth>(`https://social-network.samuraijs.com/api/1.0/auth/login`).then(res => res.data)
+        return instance.delete<PutDeleteAnswerType>(`https://social-network.samuraijs.com/api/1.0/auth/login`).then(res => res.data)
     },
 }
 
