@@ -1,4 +1,4 @@
-import {newPostActionCreator, PostType, updatePostActionCreator} from "../../../Redux/profile-reducer";
+import {actions, PostType} from "../../../Redux/profile-reducer";
 import MyPosts from "./MyPosts";
 import {connect} from "react-redux";
 import {AppStateType} from "../../../Redux/redux-store";
@@ -22,6 +22,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 
-const MyPostsContainer = connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {updatePostActionCreator, newPostActionCreator})(MyPosts);
+const MyPostsContainer = connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {updatePostActionCreator: actions.updatePostActionCreator, newPostActionCreator: actions.newPostActionCreator})(MyPosts);
 
 export default MyPostsContainer;

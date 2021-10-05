@@ -1,9 +1,8 @@
 import React from "react";
 import {
+    actions,
     DialogType,
     MessageType,
-    newMessageCreate,
-    updateMessageText
 } from "../../Redux/dialog-reducer";
 import Dialogs from "./Dialogs";
 import {connect} from "react-redux";
@@ -46,6 +45,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
 }
 
 export default compose(
-    connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {newMessageCreate, updateMessageText}),
+    connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {newMessageCreate: actions.newMessageCreate, updateMessageText: actions.updateMessageText}),
     WithAuthRedirect
 )(DialogsContainer)

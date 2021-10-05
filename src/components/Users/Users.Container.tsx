@@ -1,6 +1,6 @@
 import {connect} from "react-redux";
 import Users from "./Users";
-import {unfollow, follow, setCurrentPage, getUsers} from "../../Redux/users-reducer";
+import {unfollow, follow, getUsers, actions} from "../../Redux/users-reducer";
 import {
     getCurrentPageSelector,
     getPageSizeSelector,
@@ -48,6 +48,6 @@ let mapStateToProps = (state: AppStateType): MapStateToPropsType => {
     }
 }
 
-const UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {unfollow, follow, setCurrentPage, getUsers})(Users);
+const UsersContainer = connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(mapStateToProps, {unfollow, follow, setCurrentPage: actions.setCurrentPage, getUsers})(Users);
 
 export default UsersContainer;

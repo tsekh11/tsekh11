@@ -2,11 +2,11 @@ import React, {FC, useEffect} from 'react';
 import Profile from "./Profile";
 import {connect} from "react-redux";
 import {
+    actions,
     getInfo,
     getStatus,
     ProfileType,
     savePhoto,
-    setUserId,
     updateInfo,
     updateStatus
 } from "../../Redux/profile-reducer";
@@ -32,9 +32,13 @@ type MapDispatchToPropsType = {
     updateInfo: (data: ProfileType) => void
 }
 
+type RouteProps = {
+    userId: string
+}
+
 export type ProfileContainerType = MapDispatchToPropsType & MapStateToPropsType
 
-const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<any>> = (props) => {
+const ProfileContainer: FC<ProfileContainerType & RouteComponentProps<RouteProps>> = (props) => {
     let userId: number | null;
 
     if (props.match.params.userId) {
@@ -62,7 +66,7 @@ let MapStateToProps = (state: AppStateType): MapStateToPropsType => ({
 })
 
 export default compose(
-    connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(MapStateToProps, {getInfo, getStatus, updateStatus, savePhoto, setUserId, updateInfo}),
+    connect<MapStateToPropsType, MapDispatchToPropsType, null, AppStateType>(MapStateToProps, {getInfo, getStatus, updateStatus, savePhoto, setUserId: actions.setUserId, updateInfo}),
     withRouter,
     WithAuthRedirect
 )(ProfileContainer)
