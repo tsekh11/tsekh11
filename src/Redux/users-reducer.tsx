@@ -1,6 +1,7 @@
 import {usersAPI} from "../api/DAL";
 import {PhotosType} from "./profile-reducer";
 import {ThunkAction} from "redux-thunk";
+import {ActionsTypes} from "./redux-store";
 
 const UNFOLLOW = 'api/users/UNFOLLOW'
 const FOLLOW = 'api/users/FOLLOW'
@@ -61,39 +62,35 @@ const UsersReducer = (state = initialState, action: ActionsType): InitialStateTy
     }
 }
 
-type ActionsType = UnfollowerType | FollowerType | SetUserType | SetCurrentPageType | SetTotalCountType
+type ActionsType = ActionsTypes<typeof actions>
 
-type UnfollowerType = {type: typeof UNFOLLOW, userID: number}
-type FollowerType = {type: typeof FOLLOW, userID: number}
-type SetUserType = {type: typeof SET_USERS, users: Array<UsersType>}
-type SetCurrentPageType = {type: typeof SET_CURRENT_PAGE, currentPage: number}
-type SetTotalCountType = {type: typeof SET_TOTAL_COUNT, totalUsersCount: number}
-
-export const unfollower = (userID: number): UnfollowerType => ({type: UNFOLLOW, userID});
-export const follower = (userID: number): FollowerType => ({type: FOLLOW, userID});
-export const setUser = (users: Array<UsersType>): SetUserType => ({type: SET_USERS, users});
-export const setCurrentPage = (currentPage: number): SetCurrentPageType => ({type: SET_CURRENT_PAGE, currentPage});
-export const setTotalCount = (totalUsersCount: number): SetTotalCountType => ({type: SET_TOTAL_COUNT, totalUsersCount});
+export const actions = {
+    unfollower: (userID: number) => ({type: UNFOLLOW, userID} as const),
+    follower: (userID: number) => ({type: FOLLOW, userID} as const),
+    setUser: (users: Array<UsersType>) => ({type: SET_USERS, users} as const),
+    setCurrentPage: (currentPage: number) => ({type: SET_CURRENT_PAGE, currentPage} as const),
+    setTotalCount: (totalUsersCount: number) => ({type: SET_TOTAL_COUNT, totalUsersCount} as const),
+}
 
 type ThunkType = ThunkAction<Promise<void>, any, any, ActionsType>
 
 export const getUsers = (currentPage: number, pageSize: number): ThunkType => async (dispatch) => {
     const data = await usersAPI.getUsers(currentPage, pageSize)
-    dispatch(setUser(data.items))
-    dispatch(setTotalCount(data.totalCount))
+    dispatch(actions.setUser(data.items))
+    dispatch(actions.setTotalCount(data.totalCount))
 }
 
 export const unfollow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.unfollow(id)
     if (response.resultCode === 0)
-        dispatch(unfollower(id))
+        dispatch(actions.unfollower(id))
     setDisabled(false)
 }
 
 export const follow = (id: number, setDisabled: (val: boolean) => void): ThunkType => async (dispatch) => {
     const response = await usersAPI.follow(id)
     if (response.resultCode === 0)
-        dispatch(follower(id))
+        dispatch(actions.follower(id))
     setDisabled(false)
 }
 
