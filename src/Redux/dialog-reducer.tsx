@@ -1,3 +1,5 @@
+import {ActionsTypes} from "./redux-store";
+
 const UPDATE_MESSAGE = 'app/dialog/UPDATE-MESSAGE'
 const ADD_MESSAGE = 'app/dialog/ADD-MESSAGE'
 
@@ -49,12 +51,12 @@ const dialogReducer = (state = initialState, action: ActionsType): DialogInitial
     }
 }
 
-type UpdateMessageTextType = {type: typeof UPDATE_MESSAGE, newText: string}
-type NewMessageCreateType = {type: typeof ADD_MESSAGE}
 
-type ActionsType = UpdateMessageTextType | NewMessageCreateType
+type ActionsType = ActionsTypes<typeof actions>
 
-export const updateMessageText = (text: string): UpdateMessageTextType => ({type: UPDATE_MESSAGE, newText: text});
-export const newMessageCreate = (): NewMessageCreateType => ({type: ADD_MESSAGE});
+export const actions = {
+    updateMessageText: (text: string) => ({type: UPDATE_MESSAGE, newText: text} as const),
+    newMessageCreate: () => ({type: ADD_MESSAGE} as const),
+}
 
 export default dialogReducer;
