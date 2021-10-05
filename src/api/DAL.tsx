@@ -16,12 +16,6 @@ type GetUsers = {
     "error": null | string
 }
 
-type FollowUnfollowType = {
-    resultCode: number
-    messages: Array<string>
-    data: boolean
-}
-
 export const usersAPI = {
     getUsers(currentPage: number, pageSize: number) {
         return instance.get<GetUsers>(`https://social-network.samuraijs.com/api/1.0/users?page=${currentPage}&count=${pageSize}`)
@@ -30,24 +24,16 @@ export const usersAPI = {
             })
     },
     follow(id: number) {
-        return instance.post<FollowUnfollowType>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+        return instance.post<AnswerType<boolean>>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
             })
     },
     unfollow(id: number) {
-        return instance.delete<FollowUnfollowType>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
+        return instance.delete<AnswerType<boolean>>(`https://social-network.samuraijs.com/api/1.0/follow/${id}`)
             .then(response => {
                 return response.data
             })
-    }
-}
-
-type PhotoAnswer = {
-    resultCode: number
-    messages: Array<string>
-    data: {
-        photos: PhotosType
     }
 }
 
@@ -59,15 +45,15 @@ export const profileAPI = {
         return instance.get<string>(`profile/status/` + id).then( res => res.data)
     },
     updateUserStatus(status: string) {
-        return instance.put<PutDeleteAnswerType>('profile/status', { status })
+        return instance.put<AnswerType<Object>>('profile/status', { status })
     },
     updateUserInfo(data: ProfileType) {
-        return instance.put<PutDeleteAnswerType>('profile',  data)
+        return instance.put<AnswerType<Object>>('profile',  data)
     },
     updatePhoto(photo: File) {
         let formData = new FormData();
         formData.append('image', photo)
-        return instance.put<PhotoAnswer>('profile/photo', formData, {
+        return instance.put<AnswerType<{photos: PhotosType}>>('profile/photo', formData, {
             headers: {
                 "Content-Type": 'multipart/form-data'
             }
@@ -75,28 +61,16 @@ export const profileAPI = {
     }
  }
 
- type AuthMe = {
+ type AnswerType<T> = {
      resultCode: number
      messages: Array<string>,
-     data: {
+     data: T
+ }
+
+ type AuthMe = {
          id: number
          email: string
          login: string
-     }
- }
-
- type LoginAuth = {
-     resultCode: number
-     messages: Array<string>
-     data: {
-         id: number
-     }
- }
-
- type PutDeleteAnswerType = {
-     resultCode: number
-     messages: Array<string>
-     data: Object
  }
 
  export enum ResultCode {
@@ -110,13 +84,13 @@ export const profileAPI = {
 
 export const authAPI = {
     getAuthData() {
-        return instance.get<AuthMe>(`auth/me`).then( (res) => res.data)
+        return instance.get<AnswerType<AuthMe>>(`auth/me`).then( (res) => res.data)
     },
     loginAuth(email: string, password: string, rememberMe: boolean, captcha: boolean) {
-        return instance.post<LoginAuth>(`auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
+        return instance.post<AnswerType<{id: number}>>(`auth/login`, { email, password, rememberMe, captcha }).then(res => res.data)
     },
     logoutAuth() {
-        return instance.delete<PutDeleteAnswerType>(`auth/login`).then(res => res.data)
+        return instance.delete<AnswerType<Object>>(`auth/login`).then(res => res.data)
     },
 }
 
