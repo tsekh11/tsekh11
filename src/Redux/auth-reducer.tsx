@@ -1,5 +1,6 @@
 import {authAPI, ResultCode, ResultCodeCaptcha, securityAPI} from "../api/DAL";
 import {ThunkAction} from "redux-thunk";
+import {ActionsTypes} from "./redux-store";
 
 const SET_LOGIN = 'auth/SET-LOGIN';
 const LOGIN_ERROR = 'auth/LOGIN-ERROR';
@@ -42,22 +43,21 @@ const authReducer = (state = initialState, action: ActionsType): InitialStateTyp
     }
 }
 
-type SetLoginType = {type: typeof SET_LOGIN, data: object}
-type SetLoginErrorType = {type: typeof LOGIN_ERROR, message: string}
-type SetCaptchaUrlType = {type: typeof GET_CAPTCHA, data: string}
 
-type ActionsType = SetCaptchaUrlType | SetLoginErrorType | SetLoginType
+type ActionsType = ActionsTypes<typeof actions>
 type ThunkType = ThunkAction<Promise<void>, any, any, ActionsType>
 
-export const setLogin = (id: number | null, login: string | null, email: string | null, isAuth: boolean): SetLoginType => ({type: SET_LOGIN, data: {id, login, email, isAuth}});
-export const setLoginError = (message: string): SetLoginErrorType => ({type: LOGIN_ERROR, message});
-export const setCaptchaUrl = (data: string): SetCaptchaUrlType => ({type: GET_CAPTCHA, data});
+export const actions = {
+    setLogin: (id: number | null, login: string | null, email: string | null, isAuth: boolean) => ({type: SET_LOGIN, data: {id, login, email, isAuth}} as const),
+    setLoginError: (message: string) => ({type: LOGIN_ERROR, message} as const),
+    setCaptchaUrl: (data: string) => ({type: GET_CAPTCHA, data} as const),
+}
 
 export const getAuth = (): ThunkType => async (dispatch) => {
     let response = await authAPI.getAuthData();
     if (response.resultCode === ResultCode.Success) {
         let {id, login, email} = response.data;
-        dispatch(setLogin(id, login, email, true))
+        dispatch(actions.setLogin(id, login, email, true))
     }
 }
 export const login = (email: string, password: string, rememberMe: boolean, captcha: boolean): ThunkType => async (dispatch) => {
@@ -68,18 +68,18 @@ export const login = (email: string, password: string, rememberMe: boolean, capt
         if(response.resultCode === ResultCodeCaptcha.Required){
             dispatch(getCaptcha())
         }
-        dispatch(setLoginError(response.messages[0]))
+        dispatch(actions.setLoginError(response.messages[0]))
     }
 }
 export const logout = (): ThunkType => async (dispatch) => {
     let response = await authAPI.logoutAuth();
     if (response.resultCode === ResultCode.Success) {
-        dispatch(setLogin(null, null, null, false))
+        dispatch(actions.setLogin(null, null, null, false))
     }
 }
 export const getCaptcha = (): ThunkType => async (dispatch) => {
     let response = await securityAPI.getCaptchaUrl();
-    dispatch(setCaptchaUrl(response.url))
+    dispatch(actions.setCaptchaUrl(response.url))
 }
 
 export default authReducer;

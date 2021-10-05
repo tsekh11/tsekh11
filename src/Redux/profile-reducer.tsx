@@ -1,6 +1,6 @@
 import {profileAPI, ResultCode} from "../api/DAL";
 import {ThunkAction} from "redux-thunk";
-import {ActionsType, AppStateType} from "./redux-store";
+import {ActionsTypes, AppStateType} from "./redux-store";
 
 const ADD_POST = 'app/profile/ADD-POST';
 const UPDATE_POST = 'app/profile/UPDATE-POST'
@@ -78,7 +78,7 @@ const profileReducer = (state = initialState, action: ActionType): InitialStateT
     }
 }
 
-type ActionType = ActionsType<typeof actions>
+type ActionType = ActionsTypes<typeof actions>
 type ThunkType = ThunkAction<Promise<void>, AppStateType, any, ActionType>
 
 export const actions = {
